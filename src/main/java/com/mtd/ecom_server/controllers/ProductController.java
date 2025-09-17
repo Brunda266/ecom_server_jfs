@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mtd.ecom_server.execptions.ResourceNotFound;
 import com.mtd.ecom_server.models.Product;
 import com.mtd.ecom_server.repos.Product_Repo;
 
@@ -45,8 +46,8 @@ public class ProductController {
 	 public String deleteProduct(@PathVariable String id) {
 		Optional< Product> findproduct = productRepo.findById(id);
 		 if(findproduct.isEmpty()) {
-			 productRepo.deleteById(id);
-			 return "Failed to delete product";
+			 Log.error("Failed to delete product"+id);
+			 throw new ResourceNotFound("Product Not Found");
 		 }
 		 productRepo.deleteById(id);
 		 Log.info("Product deleted"+id);
