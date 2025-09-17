@@ -1,5 +1,8 @@
 package com.mtd.ecom_server.controllers;
 
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,32 +17,36 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mtd.ecom_server.models.Product;
 import com.mtd.ecom_server.repos.Product_Repo;
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin("*")
 @RestController 
 @RequestMapping("/products")
 public class ProductController {
+	private static final Logger Log = LoggerFactory.getLogger(ProductController.class);
 	 @Autowired Product_Repo productRepo;
      
 	 @GetMapping("/all")
      public List<Product> getAllProducts() {
-    	 return productRepo.findAll();
+    	     return productRepo.findAll();
     	        
      }
 	 @PostMapping("/add")
 	 public Product addProduct(@RequestBody Product newproduct) {
+		 Log.info("Adding Product"+ newproduct);
 		 return productRepo.save(newproduct);
 	 }
 	 @DeleteMapping("/product/delete/{id}")
 	 public String deleteProduct(@PathVariable String id) {
-		 Product findproduct = productRepo.findById(id).get();
-		 if(findproduct !=null) {
+		Optional< Product> findproduct = productRepo.findById(id);
+		 if(findproduct.isEmpty()) {
 			 productRepo.deleteById(id);
-			 return "Product Deleted"+ findproduct.getName();
-		 }
-		 else {
 			 return "Failed to delete product";
 		 }
+		 productRepo.deleteById(id);
+		 Log.info("Product deleted"+id);
+		 return "Product deleted";
+		 
 	 }
 	 @PutMapping ("/product/edit/{id}")
 	 public Product editProduct(@PathVariable String id,@RequestBody Product newproduct) {
@@ -50,6 +57,7 @@ public class ProductController {
 		 findproduct.setTags(newproduct.getTags());
 		 findproduct.setPrice(newproduct.getPrice());
 		 findproduct.setStocks(newproduct.getStocks());
+		 Log.info("Updating product"+ findproduct);
 		 return productRepo.save(findproduct);
 	 }
 }
