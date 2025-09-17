@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mtd.ecom_server.models.Product;
 import com.mtd.ecom_server.repos.Product_Repo;
 
-// import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,9 +28,11 @@ import java.util.Optional;
 public class ProductController {
 	private static final Logger Log = LoggerFactory.getLogger(ProductController.class);
 	 @Autowired Product_Repo productRepo;
+	 @Tag(name = "get all products")
      
 	 @GetMapping("/all")
      public List<Product> getAllProducts() {
+		 Log.info("Fetching Products");
     	     return productRepo.findAll();
     	        
      }
