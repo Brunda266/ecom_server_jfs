@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mtd.ecom_server.execptions.ResourceNotFound;
 import com.mtd.ecom_server.models.Product;
-import com.mtd.ecom_server.repos.Product_Repo;
+import com.mtd.ecom_server.repos.ProductRepo;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -26,7 +26,7 @@ import java.util.Optional;
 @RequestMapping("/products")
 public class ProductController {
 	private static final Logger Log = LoggerFactory.getLogger(ProductController.class);
-	 @Autowired Product_Repo productRepo;
+	 @Autowired ProductRepo productRepo;
 	 @Tag(name = "get all products")
      
 	 @GetMapping("/all")
